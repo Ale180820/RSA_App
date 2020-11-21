@@ -11,13 +11,13 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Net;
+using Microsoft.AspNetCore;
 
 namespace RSAApp.Controllers {
 
     [ApiController]
     public class RSAController : ControllerBase {
-
-
+    
         public Route route = new Route();
 
         public RSAController(IWebHostEnvironment env){
@@ -29,7 +29,8 @@ namespace RSAApp.Controllers {
         [Route("api/rsa/keys/{p}/{q}")]
         public async Task<IActionResult> GetFile(int p, int q) {
             RSA rsa = new RSA();
-            
+
+            #region Create directories
             if (string.IsNullOrWhiteSpace(route.webRoot())) {
                 route.hostEnvironment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "RSADocs");
             }
@@ -37,10 +38,15 @@ namespace RSAApp.Controllers {
             if (!Directory.Exists(route.setKDirectory())) {
                 Directory.CreateDirectory(route.setKDirectory());
             }
+
             while (System.IO.File.Exists(route.getKeysZip())){
                 System.IO.File.Delete(route.getKeysZip());
             }
+            #endregion
+
+            //Calculate keys
             rsa.calculateKey(p, q, route.getPrivateKeyR(), route.getPublicKeyR());
+
             //Add keys in zip
             var zip = ZipFile.Open(route.getKeysZip(), ZipArchiveMode.Create);
             zip.CreateEntryFromFile(route.getPublicKeyR(), "public.key", CompressionLevel.Optimal);
@@ -59,22 +65,41 @@ namespace RSAApp.Controllers {
         //POST - Encrypt or dencrypt the file
         [HttpPost]
         [Route("api/rsa/{nombre}")]
+        [RequestSizeLimit(40000000)]
         public async Task<IActionResult> EncryptOrDencrypt([FromForm] IFormFile file, [FromForm] IFormFile key, string nombre) {
             RSA rsa = new RSA();
+
+            #region Create directories
             if (string.IsNullOrWhiteSpace(route.webRoot())) {
                 route.hostEnvironment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "RSADocs");
             }
 
-            if (!Directory.Exists(route.setCDirectory())) {
-                Directory.CreateDirectory(route.setCDirectory()); 
+            if (!Directory.Exists(route.setCDirectory()) || 
+                !Directory.Exists(route.setCipherDirectory()) || 
+                !Directory.Exists(route.setDecipherDirectory())) {
+
+                Directory.CreateDirectory(route.setCDirectory());
+                Directory.CreateDirectory(route.setCipherDirectory());
+                Directory.CreateDirectory(route.setDecipherDirectory());
             }
+            #endregion
 
             string option = ""; 
             if (key.FileName == "public.key") {  option = "e"; }
             else {  option = "d";  }
-            
-            var path = route.setRoute(file.FileName);
-            var secondPath = route.setNewRoute(nombre);
+
+
+            var path = "";
+            var secondPath = ""; 
+
+            if (option == "e") {
+                path = route.setRoute(file.FileName);
+                secondPath = route.setNewRoute(nombre);
+            }
+            else {
+                path = route.setDRoute(file.FileName);
+                secondPath = route.setNewDRoute(nombre);
+            }
 
             //Read file's keys
             var keysF = route.setKeysRoute(key.FileName);

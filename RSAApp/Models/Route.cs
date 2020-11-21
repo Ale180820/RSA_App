@@ -16,17 +16,39 @@ namespace RSAApp.Models
             return hostEnvironment.WebRootPath;
         }
 
+        #region Directories
         public string setCDirectory() {
             return hostEnvironment.WebRootPath + "\\RSADocs\\";
         }
+        public string setCipherDirectory() {
+            return hostEnvironment.WebRootPath + "\\RSADocs\\" + "\\Cipher\\";
+        }
+        public string setDecipherDirectory() {
+            return hostEnvironment.WebRootPath + "\\RSADocs\\" + "\\Decipher\\";
+        }
+        #endregion
 
+        #region Cipher routes
         public string setRoute(string fileName) {
-            return hostEnvironment.WebRootPath + "\\RSADocs\\" + fileName;
+            return hostEnvironment.WebRootPath + "\\RSADocs\\" + "\\Cipher\\" + fileName;
         }
         public string setNewRoute(string nameNewFile) {
-            return hostEnvironment.WebRootPath + "\\RSADocs\\" + nameNewFile + ".txt";
+            return hostEnvironment.WebRootPath + "\\RSADocs\\" + "\\Cipher\\" + nameNewFile + ".txt";
         }
+        #endregion
 
+        #region Decipher routes
+        public string setDRoute(string fileName)
+        {
+            return hostEnvironment.WebRootPath + "\\RSADocs\\" + "\\Decipher\\" + fileName;
+        }
+        public string setNewDRoute(string nameNewFile)
+        {
+            return hostEnvironment.WebRootPath + "\\RSADocs\\" + "\\Decipher\\" + nameNewFile + ".txt";
+        }
+        #endregion
+
+        #region Keys
         public string setKeysRoute(string keyFile) {
             return hostEnvironment.WebRootPath + "\\RSADocs\\" + keyFile;
         }
@@ -35,7 +57,10 @@ namespace RSAApp.Models
         public string setKDirectory() {
             return hostEnvironment.WebRootPath + "\\RSADocs\\"+"\\Keys\\";
         }
+        #endregion
 
+        #region Zip file
+        //Zip file
         public string getKeysZip() {
             return hostEnvironment.WebRootPath + "\\RSADocs\\" + "\\Keys\\" + "ZipFile"+".zip";
         }
@@ -47,5 +72,6 @@ namespace RSAApp.Models
         public string getPrivateKeyR() {
             return hostEnvironment.WebRootPath + "\\RSADocs\\" + "\\Keys\\" +"private.key"+".txt";
         }
+        #endregion
     }
 }

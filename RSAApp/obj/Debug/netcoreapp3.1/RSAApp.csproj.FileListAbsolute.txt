@@ -21,3 +21,4 @@ C:\Users\ayalr\source\repos\RSAApp\RSAApp\bin\Debug\netcoreapp3.1\RSAApp.pdb
 C:\Users\ayalr\source\repos\RSAApp\RSAApp\obj\Debug\netcoreapp3.1\staticwebassets\RSAApp.StaticWebAssets.Manifest.cache
 C:\Users\ayalr\source\repos\RSAApp\RSAApp\obj\Debug\netcoreapp3.1\staticwebassets\RSAApp.StaticWebAssets.xml
 C:\Users\ayalr\source\repos\RSAApp\RSAApp\obj\Debug\netcoreapp3.1\RSAApp.genruntimeconfig.cache
+C:\Users\ayalr\source\repos\RSAApp\RSAApp\bin\Debug\netcoreapp3.1\web.config
