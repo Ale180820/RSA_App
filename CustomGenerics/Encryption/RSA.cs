@@ -99,7 +99,7 @@ namespace CustomGenerics.Encryption {
             var phi = (p - 1) * (q - 1);
             var e = findEVal(p, q, phi);
             var d = findD(phi, e);
-            writeKeys(n, e, d, publicK, privateK); 
+            writeKeys(n, e, d, privateK , publicK); 
         }
         //Find "e" value
         private int findEVal(int p, int q, int phi) { 
