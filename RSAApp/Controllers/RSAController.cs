@@ -58,8 +58,8 @@ namespace RSAApp.Controllers {
 
         //POST - Encrypt or dencrypt the file
         [HttpPost]
-        [Route("api/rsa/{name}")]
-        public async Task<IActionResult> EncryptOrDencrypt([FromForm] IFormFile file, [FromForm] IFormFile key, string name) {
+        [Route("api/rsa/{nombre}")]
+        public async Task<IActionResult> EncryptOrDencrypt([FromForm] IFormFile file, [FromForm] IFormFile key, string nombre) {
             RSA rsa = new RSA();
             if (string.IsNullOrWhiteSpace(route.webRoot())) {
                 route.hostEnvironment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "RSADocs");
@@ -68,13 +68,13 @@ namespace RSAApp.Controllers {
             if (!Directory.Exists(route.setCDirectory())) {
                 Directory.CreateDirectory(route.setCDirectory()); 
             }
-            string option = "";
-            
+
+            string option = ""; 
             if (key.FileName == "public.key") {  option = "e"; }
             else {  option = "d";  }
             
             var path = route.setRoute(file.FileName);
-            var secondPath = route.setNewRoute(name);
+            var secondPath = route.setNewRoute(nombre);
 
             //Read file's keys
             var keysF = route.setKeysRoute(key.FileName);
@@ -102,7 +102,7 @@ namespace RSAApp.Controllers {
                 await fileStream.CopyToAsync(memoryS);
             }
             memoryS.Position = 0;
-            return File(memoryS, System.Net.Mime.MediaTypeNames.Application.Octet, name + ".txt");
+            return File(memoryS, System.Net.Mime.MediaTypeNames.Application.Octet, nombre + ".txt");
         }
     }
 }
